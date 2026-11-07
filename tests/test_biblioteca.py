@@ -63,3 +63,9 @@ def test_devolucion_atrasada_con_multa(prestamos):
 def test_devolver_sin_prestamo(prestamos):
     with pytest.raises(KeyError):
         prestamos.devolver("111", date(2026, 11, 1))
+
+
+
+def test_multa_respeta_tope():
+    politica = MultaPorDia(500, tope=2000)
+    assert politica.calcular(date(2026, 11, 8), date(2026, 11, 28)) == 2000
