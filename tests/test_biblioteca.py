@@ -40,13 +40,15 @@ def test_prestar_marca_no_disponible(prestamos, repo):
 
 def test_prestar_libro_ya_prestado_falla(prestamos):
     prestamos.prestar("111", "1-9", date(2026, 11, 1))
+    otro_dia = date(2026, 11, 2)
     with pytest.raises(LibroNoDisponibleError):
-        prestamos.prestar("111", "2-7", date(2026, 11, 2))
+        prestamos.prestar("111", "2-7", otro_dia)
 
 
 def test_prestar_libro_inexistente(prestamos):
+    hoy = date(2026, 11, 1)
     with pytest.raises(KeyError):
-        prestamos.prestar("999", "1-9", date(2026, 11, 1))
+        prestamos.prestar("999", "1-9", hoy)
 
 
 def test_devolucion_a_tiempo_sin_multa(prestamos, repo):
@@ -61,9 +63,9 @@ def test_devolucion_atrasada_con_multa(prestamos):
 
 
 def test_devolver_sin_prestamo(prestamos):
+    hoy = date(2026, 11, 1)
     with pytest.raises(KeyError):
-        prestamos.devolver("111", date(2026, 11, 1))
-
+        prestamos.devolver("111", hoy)
 
 
 def test_multa_respeta_tope():
